@@ -116,18 +116,38 @@ Instalados:
 
 Concluído!
 ```
+**Liberar porta 8086/tcp**
+
+Caso firewalld esteja em execução, será necessário liberar a porta 
+```
+firewall-cmd --permanent --add-port=8086/tcp
+firewall-cmd --reload
+firewall-cmd --list-ports
+8086/tcp
+```
+**Ativar na inicialização e iniciar o serviço**
+
+```
+systemctl enable --now influxd
+systemctl status influxd
+```
 ### Criando certificado autoassinado
 
 **Certificados autoassinados aumentam a segurança na transmissão dos dados, mas não impedem que outro servidor se passe pelo servidor de destino**
 
 ```
 openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/influxdb-selfsigned.key -out /etc/ssl/influxdb-selfsigned.crt -days <DIAS DA VALIDADE>
+
+chmod 644 /etc/ssl/influxdb/influxdb-selfsigned.crt
+chmod 600 /etc/ssl/influxdb/influxdb-selfsigned.key 
+chown influxdb:influxdb /etc/ssl/influxdb/selfsigned.*
+
 ```
 **DIAS DA VALIDADE** será o tempo de validade do certificado, após este prazo o certificado ficará inválido.
 
-## Configurando o influxdb
+### Configurando o influxdb
 
-Editar o arquivo de configuração : **/etc/influxdb/influxdb.conf**, localizar a sessão **[http]** de acordo com o exemplo abaixo
+Com o editor de sua preferência editar o arquivo de configuração : **/etc/influxdb/influxdb.conf**, localizar a sessão **[http]** de acordo com o exemplo abaixo
 
 ```
 [http]
@@ -145,5 +165,9 @@ Editar o arquivo de configuração : **/etc/influxdb/influxdb.conf**, localizar 
   https-private-key = "/etc/ssl/influxdb-selfsigned.key"
 
 ```
-
+**Reiniciar o serviço influxd**
+```
+systemctl restart influxd
+```
+**Se as configurações forem bem sucedidas não deverá haver erro**
 
