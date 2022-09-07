@@ -246,5 +246,9 @@ time                BytesReceived BytesSent CommonName   ConnectedSince         
 ```
 ![image](https://user-images.githubusercontent.com/7004964/188971335-d6e136e7-8d5d-4385-a7ee-84f9fc90502e.png)
 
+###Configurar o grafana conectar ao influxdb
 
+Acessar Configuration --> Data sources
+
+![image](https://user-images.githubusercontent.com/7004964/188973083-d1886847-0f50-4b7c-a21d-a32c7cec5ac5.png)
 
