@@ -46,11 +46,11 @@ Nas configurações do openvpn, na sessão **Advanced configuration** adicionar
 
 **status-version 2**
 
-### Instalação do Grafana
+## Instalação do Grafana
 
 https://grafana.com/docs/grafana/latest/setup-grafana/installation/
 
-### Instalação do InfluxDB 1.8
+## Instalação do InfluxDB 1.8
 Neste laboratório o **grafana** e o **influxDB** foram instalados no mesmo servidor RockyLinux 8.5 (ou qualquer sabor linux de sua preferência)
 
 
