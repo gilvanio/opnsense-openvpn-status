@@ -131,20 +131,41 @@ firewall-cmd --list-ports
 systemctl enable --now influxd
 systemctl status influxd
 ```
-### Criando certificado autoassinado
+### Criando certificado ssl autoassinado
 
 **Certificados autoassinados aumentam a segurança na transmissão dos dados, mas não impedem que outro servidor se passe pelo servidor de destino**
 
 ```
-openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/influxdb-selfsigned.key -out /etc/ssl/influxdb-selfsigned.crt -days <DIAS DA VALIDADE>
+openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/<NOME_ARQUIVO>.key -out /etc/ssl/<NOME_ARQUIVO>.crt -days <DIAS DA VALIDADE>
 
+openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/influxdb-selfsigned.key -out /etc/ssl/influxdb-selfsigned.crt -days 3650
+Generating a RSA private key
+...........+++++
+..........................................+++++
+writing new private key to '/etc/ssl/influxdb-selfsigned.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:BR   <-- país
+State or Province Name (full name) []:PE   <-- estado
+Locality Name (eg, city) [Default City]:Recife  <-- cidade
+Organization Name (eg, company) [Default Company Ltd]:Gilvanio Moura Linux <-- Nome da empresa
+Organizational Unit Name (eg, section) []:infraestrutura   <-- setor
+Common Name (eg, your name or your server's hostname) []:lab-influxdb  <-- nome do servidor
+Email Address []:gilvaniomoura@gmail.com   <-- seu email
+```
+**Permissão e propriedade**
+
+```
 chmod 644 /etc/ssl/influxdb/influxdb-selfsigned.crt
 chmod 600 /etc/ssl/influxdb/influxdb-selfsigned.key 
 chown influxdb:influxdb /etc/ssl/influxdb/selfsigned.*
-
 ```
-**DIAS DA VALIDADE** será o tempo de validade do certificado, após este prazo o certificado ficará inválido.
-
 ### Configurando o influxdb
 
 Com o editor de sua preferência editar o arquivo de configuração : **/etc/influxdb/influxdb.conf**, localizar a sessão **[http]** de acordo com o exemplo abaixo
@@ -170,4 +191,60 @@ Com o editor de sua preferência editar o arquivo de configuração : **/etc/inf
 systemctl restart influxd
 ```
 **Se as configurações forem bem sucedidas não deverá haver erro**
+
+### Criando usuário, permissões e banco de dados
+
+Como a configuração foi feita com certificado ssl o acesso ao banco será feito com o comando :
+
+- Criando usuários
+```
+influx -ssl -unsafeSsl -host localhost
+> CREATE USER admin WITH PASSWORD '<SENHA>' WITH ALL PRIVILEGES
+> CREATE USER opnsense WITH PASSWORD '<SENHA>'
+> CREATE USER grafana WITH PASSWORD '<SENHA>'
+> show users
+>
+```
+- Dados permissão aos usuários (o usuário opnsense irá gravar no banco, o usuário grafana irá consultar no banco)
+```
+> GRANT WRITE ON "infraestrutura" TO "opnsense"
+> GRANT READ ON "infraestrutura" TO "grafana"
+>
+```
+
+ - Criando banco de dados infraestrutura(a sua escolha)
+```
+> CREATE DATABASE "infraestrutura"
+> show databases
+name: databases
+name
+----
+_internal
+infraestrutura
+```
+* Acessando o banco de dados [infraestrutura] e listando os measurements(tabelas)
+```
+> USE infraestrutura
+Using database infraestrutura
+> SHOW MEASUREMENTS (o measurement será criado na primeira conexão de envio dos dados)
+```
+**Se o arquivo de log foi criando no opnsense (/var/log/opnsense-status.log deverá existir dados no arquivo), execute o script /usr/local/bin/opnsense_openvnp_status.sh** no opnsense e checar no influxdb
+
+```
+/usr/local/bin/opnsense_openvnp_status.sh
+```
+```
+> USE infraestrutura
+Using database infraestrutura
+> SHOW MEASUREMENTS (o measurement será criado na primeira conexão de envio dos dados)
+openvpn-status
+> SELECT * FROM "openvpn-status"
+name: openvpn-status
+time                BytesReceived BytesSent CommonName   ConnectedSince           ConnectedSince_t LoginTime  RealAddress         Username   VirtualAddress
+----                ------------- --------- ----------   --------------           ---------------- ---------  -----------         --------   --------------
+1661798280096523136 248472        65136     "client03"   Mon Aug 29 12:11:27 2022 1661785887       1661798280 170.xx.xx.xx:33334  client03   10.41.1.10
+```
+![image](https://user-images.githubusercontent.com/7004964/188971335-d6e136e7-8d5d-4385-a7ee-84f9fc90502e.png)
+
+
 
