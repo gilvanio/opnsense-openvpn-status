@@ -1,0 +1,8 @@
+# $FreeBSD$
+#
+SHELL=/bin/sh
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+# See crontab(5) for field format.
+*/1	*	*	*	*	root	/usr/local/bin/opnsense_openvpn_status.sh
+
