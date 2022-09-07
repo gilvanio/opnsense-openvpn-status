@@ -252,3 +252,14 @@ Acessar Configuration --> Data sources
 
 ![image](https://user-images.githubusercontent.com/7004964/188973083-d1886847-0f50-4b7c-a21d-a32c7cec5ac5.png)
 
+Adicionar um data source influxdb
+
+![image](https://user-images.githubusercontent.com/7004964/188973597-f5c5105b-9775-4ed9-91d6-59ced97b250f.png)
+
+![image](https://user-images.githubusercontent.com/7004964/188973772-8944bd5f-dcaa-452f-9c07-dcae451aff34.png)
+
+![image](https://user-images.githubusercontent.com/7004964/188974527-d255c6fe-7cf3-40d3-9b97-60d4b491faed.png)
+
+![image](https://user-images.githubusercontent.com/7004964/188976645-705c1a62-d3dc-4451-b6cb-ade8ccf8595d.png)
+
+
