@@ -10,8 +10,9 @@ Neste projeto estou utilizando
 * shell bash
 * influxDB 18 (instalado no mesmo servidor do grafana)
 * Grafana 9
+* RockyLinux 8.5
 
-## Configurações no OpnSense
+## Configurações no OPNSense
 
 ### Instalar o shell bash 
 
@@ -36,4 +37,21 @@ Neste projeto estou utilizando
 * opnsense-status-cron copiar para /etc/cron.d/
 
 `# cp -a opnsense-status-cron /etc/cron.d/` 
+
+## Configuração do OpenVPN
+
+Nas configurações do openvpn, na sessão **Advanced configuration** adicionar 
+
+**status /var/log/openvpn-status.log 30**
+
+**status-version 2**
+
+### Instalação do Grafana
+
+https://grafana.com/docs/grafana/latest/setup-grafana/installation/
+
+### Instalação do InfluxDB 1.8
+Neste laboratório o **grafana** e o **influxDB** foram instalados no mesmo servidor RockyLinux 8.5 (ou qualquer sabor linux de sua preferência)
+
+
 
