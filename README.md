@@ -42,16 +42,34 @@ Neste projeto estou utilizando
 
 Nas configurações do openvpn, na sessão **Advanced configuration** adicionar 
 
+```
 **status /var/log/openvpn-status.log 30**
-
 **status-version 2**
+```
 
 ## Instalação do Grafana
 
 https://grafana.com/docs/grafana/latest/setup-grafana/installation/
 
 ## Instalação do InfluxDB 1.8
-Neste laboratório o **grafana** e o **influxDB** foram instalados no mesmo servidor RockyLinux 8.5 (ou qualquer sabor linux de sua preferência)
+
+Neste laboratório o **grafana** e o **influxDB 1.8** foram instalados no mesmo servidor RockyLinux 8.5 (poderá reproduzir as mesmas configurações em qualquer sabor linux de sua preferência)
+
+Estou o usando a **versão 1.8** do **Influxdb**, para versões mais novas a partir das versões **2.x**, a tabela(comparando com um sgbd relacional) muda de **measurement** para **bucket** e outras configurações.
+
+
+```
+# cat <<EOF | sudo tee /etc/yum.repos.d/influxdb.repo
+[influxdb]
+name = InfluxDB Repository - RHEL \$releasever
+baseurl = https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
+enabled = 1
+gpgcheck = 1
+gpgkey = https://repos.influxdata.com/influxdb.key
+EOF
+```
+
+
 
 
 
