@@ -38,6 +38,9 @@ Neste projeto estou utilizando
 
 `# scp -p opnsense-status-cron root@<IP FIREWALL>:/etc/cron.d/` 
 
+as configurações devem ser modificadas no arquivo **/usr/local/etc/opnsense_openvpn_status.conf**
+
+
 ## Configurando o OpenVPN
 
 Nas configurações do openvpn, na sessão **Advanced configuration** adicionar :
