@@ -380,6 +380,34 @@ A mensagem indica que a conexão com o banco foi executada com sucesso e um meas
 
 ![image](https://user-images.githubusercontent.com/7004964/189240737-73beb733-e578-43d8-8597-cfd664bd4c03.png)
 
+### Resultado esperado após importar o template
 
+![image](https://user-images.githubusercontent.com/7004964/189241228-56c426f9-2afc-4a4b-b624-a90bade4fd07.png)
 
+Caso exista dados na tabela **openvpn-status**
 
+# Dica
+Caso após importar, o paínel fique em branco, acesse cada configuração e verifique se o banco selecionado é o influxDB-infraestrutura
+
+## Painel Clientes conectados atualmente
+
+```
+SELECT CommonName, Username,RealAddress, VirtualAddress, ConnectedSince, ConnectedSince_t, LoginTime, BytesReceived, BytesSent FROM "openvpn-status" WHERE time > now() - 1m ORDER BY time DESC
+```
+![image](https://user-images.githubusercontent.com/7004964/189241533-2e461409-97c1-48e6-9ad7-ab39b4cb587d.png)
+
+## Painel Clientes conectados
+
+```
+SELECT COUNT(VirtualAddress) FROM "openvpn-status" WHERE time > now() - 1m ORDER BY time DESC
+```
+![image](https://user-images.githubusercontent.com/7004964/189241650-a6e3a96c-0c1c-4a5c-9794-c2e473b57ed4.png)
+
+## Painel Conexão sem IP
+
+```
+SELECT COUNT(VirtualAddress) FROM "openvpn-status" WHERE VirtualAddress = '' AND time > now() - 1m ORDER BY time DESC
+```
+![image](https://user-images.githubusercontent.com/7004964/189241818-e917a6e8-6a08-4022-b20d-d7f52ccfdd5f.png)
+
+# Este é um exemplo simples de um dashboard, que poderá exibir outras informações
