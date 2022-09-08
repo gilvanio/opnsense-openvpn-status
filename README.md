@@ -390,7 +390,7 @@ A mensagem indica que a conexão com o banco foi executada com sucesso e um meas
 Caso exista dados na tabela **openvpn-status**
 
 # Dica
-Caso após importar, o paínel fique em branco, acesse cada configuração e verifique se o banco selecionado é o influxDB-infraestrutura
+Caso após importar o paínel fique em branco, acesse cada configuração e verifique se o banco selecionado é o influxDB-infraestrutura
 
 ## Painel Clientes conectados atualmente
 
