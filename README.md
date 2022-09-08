@@ -346,11 +346,11 @@ time                BytesReceived BytesSent CommonName   ConnectedSince         
 
 ### Configurar o grafana para conectar ao influxdb
 
-Acessar Configuration --> Data sources
+- Acessar **Configuration --> Data sources**
 
 ![image](https://user-images.githubusercontent.com/7004964/188973083-d1886847-0f50-4b7c-a21d-a32c7cec5ac5.png)
 
-Adicionar um data source influxdb
+- Adicionar um data source influxdb
 
 ![image](https://user-images.githubusercontent.com/7004964/188973597-f5c5105b-9775-4ed9-91d6-59ced97b250f.png)
 
