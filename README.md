@@ -223,7 +223,7 @@ InfluxDB shell version: 1.8.10
 ```
 observação : a senha terá que está entre **aspas simples**
 
-A partir de agora todo acesso terá que ser autenticado pois no arquivo de configuração **/etc/influxdb/influxdb.conf**, a opção **auth-enabled = true**  para desabilitar modifique para **false** e reinicie o influx : **systemctl restart influxd**
+A partir de agora todo acesso terá que ser autenticado conforme definido no arquivo de configuração **/etc/influxdb/influxdb.conf**, a opção **auth-enabled = true**,  para desabilitar modifique para **false** e reinicie o influx : **systemctl restart influxd**
 
 Após criar o usuário **admin**, sair com o comando **quit** e conectar novamente, mas desta vez para executar qualquer comando será necessário a autenticação após conectar usando o comando **auth**, **usuário** e **senha**, executar o comando **SHOW USERS**, para testar a permissão.
 
