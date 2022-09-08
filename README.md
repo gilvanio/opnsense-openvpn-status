@@ -366,4 +366,20 @@ A mensagem indica que a conexão com o banco foi executada com sucesso e um meas
 - Verifique se a senha do usuário **grafana** está correta, acessando o banco e autenticando com o usuário;
 - Verificar se o https está habilitado
 
+### Importando o template
+
+- Para importar o template **Dashboards --> Browser**
+
+![image](https://user-images.githubusercontent.com/7004964/189240386-71dc2404-8b94-45c3-b87e-49d864a73b48.png)
+
+![image](https://user-images.githubusercontent.com/7004964/189240486-b955c4f6-f932-4cb2-92f5-079637af1c62.png)
+
+- Localize o template
+
+![image](https://user-images.githubusercontent.com/7004964/189240574-0a92e33e-1bc4-4d21-b5f4-f1a282c75fc7.png)
+
+![image](https://user-images.githubusercontent.com/7004964/189240737-73beb733-e578-43d8-8597-cfd664bd4c03.png)
+
+
+
 
