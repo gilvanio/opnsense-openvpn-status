@@ -192,36 +192,94 @@ systemctl restart influxd
 ```
 **Se as configurações forem bem sucedidas não deverá haver erro**
 
-### Criando usuário, permissões e banco de dados
+### Criando usuário admin
 
 Como a configuração foi feita com certificado ssl o acesso ao banco será feito com o comando :
 
-- Criando usuários
 ```
-influx -ssl -unsafeSsl -host localhost
+]# influx -ssl -unsafeSsl -host localhost
+Connected to https://localhost:8086 version 1.8.10
+InfluxDB shell version: 1.8.10
 > CREATE USER admin WITH PASSWORD '<SENHA>' WITH ALL PRIVILEGES
-> CREATE USER opnsense WITH PASSWORD '<SENHA>'
-> CREATE USER grafana WITH PASSWORD '<SENHA>'
-> show users
->
+> quit
 ```
-- Dados permissão aos usuários (o usuário opnsense irá gravar no banco, o usuário grafana irá consultar no banco)
+observação : a senha terá que está entre aspas simples
+
+A partir de agora, todo acesso terá que ser autenticado
+
+Após criar o usuário admin, sair com o comando quit e conectar novamente, mas desta vez para executar qualquer comando será necessário a autenticação, após conectar, com o comando auth, usuário e senha, executar o comando SHOW USERS, para testar a permissão.
+
 ```
-> GRANT WRITE ON "infraestrutura" TO "opnsense"
-> GRANT READ ON "infraestrutura" TO "grafana"
->
+]# influx -ssl -unsafeSsl -host localhost
+influx -ssl -unsafeSsl -host localhost
+Connected to https://localhost:8086 version 1.8.10
+InfluxDB shell version: 1.8.10
+> auth
+username: admin
+password: <SENHA>
+> 
+>SHOW USERS
 ```
 
- - Criando banco de dados infraestrutura(a sua escolha)
+- Criando banco de dados infraestrutura(a sua escolha)
 ```
 > CREATE DATABASE "infraestrutura"
-> show databases
+```
+- Listando os bancos
+```
+> SHOW DATABASES
 name: databases
 name
 ----
 _internal
 infraestrutura
 ```
+- Criando os usuários **opnsense** e **grafana** 
+O usuário **grafana** terá perfil de **admin** para poder conectar ao banco influxdb
+O usuário **opnsense** terá perfil de **WRITE** para gravar os dados no banco influxdb
+
+```
+> CREATE USER "grafana" WITH PASSWORD '<SENHA>' WITH ALL PRIVILEGES
+> SHOW USERS
+user     admin
+----     -----
+admin  true
+grafana  true
+> 
+```
+Ao listar os usuários com o comando **SHOW USERS**, observe que tanto o usuário **admin** e **grafana** estão como **true** e **opnsense** como **false**
+
+- Criando o usuário **opnsense** e conceder permissão
+
+```
+> CREATE USER "opnsense" WITH PASSWORD '<SENHA>'
+> SHOW USERS
+user     admin
+----     -----
+admin  true
+grafana  true
+opnsense  false
+
+```
+
+- Conceder permissão ao usuário **opnsense** para o banco de dados criado, no nosso exemplo **infraestrutura**
+```
+> GRANT WRITE ON "infraestrutura" TO "opnsense"
+>
+```
+- Checando as permissões do usuário **opnsense**
+
+```
+> SHOW GRANTS FOR "opnsense"
+database       privilege
+--------       ---------
+infraestrutura WRITE
+> 
+```
+## Com os usuários criados e permissões concedidas, como também o banco de dados, iremos criar o measurement(tabela)
+Se não existe uma tabela(measurement) ao tentar conectar o grafana ao banco dará um erro, podemos adicionar um registro para forçar a conexão, depois o
+script quem irá enviar os dados.
+
 * Acessando o banco de dados [infraestrutura] e listando os measurements(tabelas)
 ```
 > USE infraestrutura
