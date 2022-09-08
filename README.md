@@ -1,6 +1,6 @@
 # Opnsense openvpn status
 
-Exibição dos usuários conectados no openvpn instalado no Opnsense no grafana.
+Exibição dos usuários conectados no openvpn instalado no Opnsense com grafana.
 
 O envio dos dados será feita de forma segura (criptografada), através do https.
 
