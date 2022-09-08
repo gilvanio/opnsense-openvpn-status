@@ -415,4 +415,7 @@ SELECT COUNT(VirtualAddress) FROM "openvpn-status" WHERE VirtualAddress = '' AND
 
 ### Este é um exemplo simples de um dashboard, que poderá exibir outras informações
 
+[https://grafana.com/]
+[https://docs.influxdata.com/influxdb/v1.8/]
+
 - Farei uma revisão de ortografia e concordância
