@@ -360,4 +360,10 @@ time                BytesReceived BytesSent CommonName   ConnectedSince         
 
 ![image](https://user-images.githubusercontent.com/7004964/188976645-705c1a62-d3dc-4451-b6cb-ade8ccf8595d.png)
 
+A mensagem indica que a conexão com o banco foi executada com sucesso e um measurement foi encontrado, em caso de erro, checar as configurações :
+
+- Acessar o influxdb via linha de comando, e checar se o measurement **openvpn-status** foi criado;
+- Verifique se a senha do usuário **grafana** está correta, acessando o banco e autenticando com o usuário;
+- Verificar se o https está habilitado
+
 
