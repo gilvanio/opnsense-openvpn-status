@@ -40,7 +40,6 @@ Neste projeto estou utilizando
 
 as configurações devem ser modificadas no arquivo **/usr/local/etc/opnsense_openvpn_status.conf**
 
-
 ## Configurando o OpenVPN
 
 Nas configurações do openvpn, na sessão **Advanced configuration** adicionar :
@@ -49,7 +48,7 @@ Nas configurações do openvpn, na sessão **Advanced configuration** adicionar 
 status /var/log/openvpn-status.log 30
 status-version 2
 ```
-A opção : **status-version 2**, define que o delimitador dos campos será a vírgula
+A opção : **status-version 2**, define o delimitador dos campos a vírgula
 
 ![image](https://user-images.githubusercontent.com/7004964/189235808-3afb347b-1137-4b62-ab30-6bb373913bb6.png)
 
@@ -203,9 +202,9 @@ systemctl restart influxd
 
 ### Primeiro acesso ao influxdb
 
-No primeiro acesso será necessário a criação do usuário **admin**, para depois criar os demais, o banco e as permissões.
+No primeiro acesso será necessário a criação do usuário **admin** para depois criar os demais, o banco e as permissões.
 
-Como na configuração foi definida com a opção **https-enabled = true** o acesso deverá ser feito com ssl
+Como na configuração foi definida com a opção **https-enabled = true** o acesso deverá ser feito com o comando :
 
 **influx -ssl -unsafeSsl -host localhost**
 
@@ -225,7 +224,7 @@ observação : a senha terá que está entre **aspas simples**
 
 A partir de agora todo acesso terá que ser autenticado conforme definido no arquivo de configuração **/etc/influxdb/influxdb.conf**, a opção **auth-enabled = true**,  para desabilitar modifique para **false** e reinicie o influx : **systemctl restart influxd**
 
-Após criar o usuário **admin**, sair com o comando **quit** e conectar novamente, mas desta vez para executar qualquer comando será necessário a autenticação após conectar usando o comando **auth**, **usuário** e **senha**, executar o comando **SHOW USERS**, para testar a permissão.
+Após criar o usuário **admin**, sair com o comando **quit** e conectar novamente, mas desta vez para executar qualquer comando será necessário a autenticação com o comando **auth**, **usuário** e **senha**, executar o comando **SHOW USERS**, para testar a permissão.
 
 ```
 ]# influx -ssl -unsafeSsl -host localhost
@@ -241,9 +240,10 @@ user     admin
 ----     -----
 admin    true
 ```
-Antes de criar os outros usuários será necessário criar o banco de dados, pois o usuário **opnsense** será concedido a permissão de gravação.
+Antes de criar os outros usuários será necessário criar o banco de dados, pois o usuário **opnsense** será concedido a permissão de gravação vinculado ao banco.
 
 ### Criando banco de dados infraestrutura(a sua escolha)
+
 ```
 > CREATE DATABASE "infraestrutura"
 ```
@@ -299,7 +299,8 @@ infraestrutura WRITE
 ## Com os usuários criados e permissões concedidas, banco de dados criado, iremos criar o measurement(tabela)
 
 Se não existir uma **tabela(measurement)** ao tentar conectar o grafana ao banco dará um erro e não conectará ao banco
-script quem irá enviar os dados.
+
+Após criado o banco o script no opnsense criará o measurement openvpn-status.
 
 * Acessando o banco de dados [infraestrutura] e listando os measurements(tabelas)
 ```
@@ -321,9 +322,11 @@ Using database infraestrutura
 CLIENT_LIST,client01,200.XX.XX.XX:33491,10.41.1.6,,164309,44171,Thu Sep  8 17:26:43 2022,1662668803,client01,68,1
 CLIENT_LIST,client02,170.XX.XX.XX:33317,10.41.1.10,,182848,44732,Thu Sep  8 17:24:31 2022,1662668671,client02,67,0
 ```
+- Debugando
 
 ```
 # /usr/local/bin/opnsense_openvnp_status.sh
+
 HTTP/1.1 204 No Content
 Content-Type: application/json
 Request-Id: 89adcb47-2fc7-11ed-a666-005056aa98e8
@@ -417,5 +420,3 @@ SELECT COUNT(VirtualAddress) FROM "openvpn-status" WHERE VirtualAddress = '' AND
 
 [https://grafana.com/]
 [https://docs.influxdata.com/influxdb/v1.8/]
-
-- Farei uma revisão de ortografia e concordância
